@@ -1,0 +1,6 @@
+
+const BUILD_SOLVED = 'SOLVED';
+const BUILD_EMPTY = 'EMPTY';
+const BUILD_ACTIVE = 'ACTIVE';
+
+module.exports = {BUILD_SOLVED, BUILD_EMPTY, BUILD_ACTIVE};

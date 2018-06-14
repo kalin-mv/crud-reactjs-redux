@@ -1,0 +1,23 @@
+@import '../../scss/style.scss';
+
+table.table-main {
+    border-collapse: collapse;
+
+    th {
+        @apply .text-sm .font-semibold .text-grey-darker .p-2 .bg-grey-lightest;
+    }
+
+    td {
+        @apply .p-2 .border-t .border-grey-light .font-mono .text-sm;
+
+        input {
+            @apply .w-full .appearance-none .p-1;
+            &.active {
+                @apply .border-b .border-grey-light;
+            }
+            &.error {
+                @apply .border-b .border-red-light;
+            }
+        }
+    }
+}

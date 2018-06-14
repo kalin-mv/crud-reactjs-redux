@@ -1,0 +1,13 @@
+@import '../../scss/style.scss';
+
+table.table-history {
+    border-collapse: collapse;
+
+    th {
+        @apply .text-sm .font-semibold .text-grey .p-2 .bg-grey-lighter;
+    }
+
+    td {
+        @apply .p-2 .border-t .border-grey-light .font-mono .text-sm;
+    }
+}
