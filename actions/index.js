@@ -4,6 +4,7 @@ import _ from 'lodash';
  * action types
  */
 
+export const RELOAD_APP = 'RELOAD_APP';
 export const SAVE_COMPANY = 'SAVE_COMPANY';
 export const DELETE_COMPANY = 'DELETE_COMPANY';
 export const LOAD_COMPANIES_PAGE = 'LOAD_COMPANIES_PAGE';
@@ -40,6 +41,7 @@ function createActionType(name) {
 export const company = createActionType('companies');
 export const build = createActionType('builds');
 
+export const reloadApp = () => action(RELOAD_APP, {});
 export const loadCompaniesPage = () => action(LOAD_COMPANIES_PAGE, {});
 export const saveCompany = ( company ) => action(SAVE_COMPANY, { company });
 export const deleteCompany = ( id ) => action(DELETE_COMPANY, { id } );

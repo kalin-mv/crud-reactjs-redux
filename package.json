@@ -1,12 +1,12 @@
 {
-  "name": "terrace-ag",
+  "name": "crud-reactjs-redux",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p 8000"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@zeit/next-css": "^0.2.0",
@@ -35,7 +35,7 @@
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "eslint": "^4.19.1",
-    "eslint-plugin-react": "@latest",
+    "eslint-plugin-react": "^7.9.1",
     "file-loader": "^1.1.11",
     "postcss-easy-import": "^3.0.0",
     "postcss-loader": "^2.1.5",

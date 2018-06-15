@@ -50,7 +50,6 @@ function* deleteCompanyById(id) {
 /******************************* WATCHERS *************************************/
 /******************************************************************************/
 
-// Fetches data for a User : user data + starred repos
 function* watchCompaniesPage() {
     while(true) {
         yield take(actions.LOAD_COMPANIES_PAGE);
@@ -109,12 +108,19 @@ function* watchRebuildCompany() {
     }
 }
 
+function* watchReloadApp() {
+    while(true) {
+        yield take(actions.RELOAD_APP);
+    }
+}
+
 export default function* root() {
     yield all([
         fork(watchCompaniesPage),
         fork(watchSaveCompany),
         fork(watchDeleteCompany),
         fork(watchRebuildCompany),
+        fork(watchReloadApp),
     ]);
 }
   
