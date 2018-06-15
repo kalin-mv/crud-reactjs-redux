@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { saveCompany } from '../../actions';
 
-class TableAdd extends Component {
+class TableAdd extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,6 +13,8 @@ class TableAdd extends Component {
             price: ''
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     handleSave() {
@@ -76,8 +78,8 @@ class TableAdd extends Component {
                 </td>
                 <td>
                     <div className="flex justify-around">
-                        <i className="fas fa-check-circle text-grey hover:text-grey-darker" onClick={this.handleSave.bind(this)}/>
-                        <i className="fas fa-times-circle text-grey hover:text-grey-darker" onClick={this.handleClose.bind(this)}></i>
+                        <i className="fas fa-check-circle text-grey hover:text-grey-darker" onClick={this.handleSave}/>
+                        <i className="fas fa-times-circle text-grey hover:text-grey-darker" onClick={this.handleClose}></i>
                     </div>
                 </td>
             </tr>            

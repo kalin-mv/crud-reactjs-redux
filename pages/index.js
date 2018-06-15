@@ -1,9 +1,8 @@
 import '../scss/style.scss';
-
-import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Map, List } from 'immutable';
 
 import Layout from '../components/Layout';
 import Table from '../components/Table/Table';
@@ -12,28 +11,28 @@ import History from '../components/History/History';
 import { loadCompaniesPage } from '../actions';
 import { BUILD_SOLVED, BUILD_ACTIVE } from '../services/constants';
 
-class Index extends Component {
+class Index extends PureComponent {
 
     componentDidMount() {
         this.props.loadCompaniesPage();
     }
 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    // this.props.loadCompaniesPage();
-    // }
-
     render() {
         const { companies, builds } = this.props;
-        const isLoading = !companies || !builds;
-        
-        let list = [], history = [];
+        const isLoading = companies.size <= 0 || builds.size <= 0;
+        let list = Map(), history = List();
         if (!isLoading) {
-            const b = _.find(builds, { status: BUILD_ACTIVE });
-            list = _.filter(companies, {build: b.id});
-            history = _.chain(builds)
-                .filter(c => c.status == BUILD_SOLVED)
-                .orderBy('updatedAt', 'desc')
-                .map(o => _.filter(companies, { build: o.id })).value();
+            const b = builds.find(o => o.get('status') === BUILD_ACTIVE);
+            list = companies
+                .filter(c => c.get('build') === b.get('id'))
+                .sortBy(c => parseInt(c.get('id')));
+            builds
+                .filter(c => c.get('status') === BUILD_SOLVED)
+                .sortBy(c => -parseInt(c.get('updatedAt')))
+                .map(o => {
+                    const c = companies.filter(cc => cc.get('build') === o.get('id'));
+                    history = history.push(c);
+                });
         }
 
         return (
@@ -48,7 +47,7 @@ class Index extends Component {
                     <div className="bg-grey-lightest border-l border-r rounded shadow mb-6">
                         <div className="border-b px-6 pt-6 flex flex-col items-center">
                             {
-                                _.map(history, (item, i) =>  
+                                history.valueSeq().map((item, i) =>  
                                     <div key={i} className="w-1/2 mb-6">
                                         <History companies={item}/>
                                     </div>
@@ -65,11 +64,15 @@ class Index extends Component {
 Index.propTypes = {
     loadCompaniesPage: PropTypes.func.isRequired,
     companies: PropTypes.object.isRequired,
+    builds: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {
-    const { entities: { companies, builds }} = state;   
-    return { companies, builds };
+    const { entities } = state;   
+    return {
+        companies: entities.get('companies'), 
+        builds: entities.get('builds')
+    };
 };
 
 export default connect(mapStateToProps, { loadCompaniesPage })(Index);

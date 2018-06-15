@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 
 import TableRow from './TableRow';
@@ -11,6 +10,9 @@ class Table extends Component {
     constructor(props) {
         super(props);
         this.state = { addVisible : false, isRebuildMode : false };
+        this.handleRebuildClick = this.handleRebuildClick.bind(this);
+        this.handleAddRow = this.handleAddRow.bind(this);
+        this.handleAddChanged = this.handleAddChanged.bind(this);
     }
 
     handleAddRow() {
@@ -29,17 +31,17 @@ class Table extends Component {
         const { companies, isLoading } = this.props;
         return (
             <div className="w-1/2">
-                <TableBar onRebuldClick={this.handleRebuildClick.bind(this)} isRebuildMode = {this.state.isRebuildMode}/>
+                <TableBar onRebuldClick={this.handleRebuildClick} isRebuildMode = {this.state.isRebuildMode}/>
                 <div className=" border border-grey-light rounded">
                     <table className="w-full text-left table-main">
                         <thead>
-                            <TableHead onHandleClick={this.handleAddRow.bind(this)}/>
+                            <TableHead onHandleClick={this.handleAddRow}/>
                         </thead>
                         <tbody>
-                            {isLoading? <TableLoading/> :_.map(companies, (item) => 
-                                <TableRow key={item.id} item={item} isRebuildMode = {this.state.isRebuildMode}/> 
+                            {isLoading? <TableLoading/> :companies.valueSeq().map(item => 
+                                <TableRow key={item.get('id')} item={item} isRebuildMode = {this.state.isRebuildMode}/> 
                             )}
-                            <TableAdd visible={this.state.addVisible} onChange={this.handleAddChanged.bind(this)}/>
+                            <TableAdd visible={this.state.addVisible} onChange={this.handleAddChanged}/>
                         </tbody>
                     </table>
                 </div>

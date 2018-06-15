@@ -2,28 +2,29 @@ import * as ActionTypes from '../actions';
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux';
 
-const initialState = { companies: {} };
+const initialState = fromJS({
+    companies: {},
+    builds: {}
+});
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = initialState, action) {
     if (action.response && action.response.entities) {
         const { response: { entities } } = action;
-        let mState = fromJS(state);
         switch (action.meta.method) {
         case ActionTypes.READ:
         case ActionTypes.CREATE:
         case ActionTypes.UPDATE:
-            mState = mState.mergeDeep(entities);    
+            state = state.mergeDeep(entities);    
             break;
         case ActionTypes.DELETE: {
-            const list = mState.get(action.meta.entity);
-            mState = mState.set(action.meta.entity, list.remove(action.data.id));
+            const list = state.get(action.meta.entity);
+            state = state.set(action.meta.entity, list.remove(action.data.id));
             break;
         }
         default:
             break;
         }
-        return mState.toJS();
     }
     return state;
 }

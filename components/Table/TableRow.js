@@ -11,11 +11,14 @@ class TableRow extends Component {
         this.state = { 
             isEdit : false,
             companyValid: true,
-            companyName: this.props.item.companyName,
+            companyName: this.props.item.get('companyName'),
             priceValid: true,
-            price: this.props.item.price,
+            price: this.props.item.get('price'),
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
     
     handleEdit() {
@@ -23,7 +26,7 @@ class TableRow extends Component {
     }
 
     handleDelete() {
-        this.props.deleteCompany(this.props.item.id);
+        this.props.deleteCompany(this.props.item.get('id'));
     }
 
     handleSave() {
@@ -31,7 +34,7 @@ class TableRow extends Component {
         if (companyValid) {
             const { companyName, price } = this.state;
             this.props.saveCompany({ 
-                id: this.props.item.id, 
+                id: this.props.item.get('id'), 
                 companyName, 
                 price: parseFloat(price) 
             });
@@ -64,7 +67,7 @@ class TableRow extends Component {
             <tr>
                 <td className="whitespace-no-wrap">
                     {
-                        this.props.isRebuildMode && <Checkbox itemId={this.props.item.id}/>
+                        this.props.isRebuildMode && <Checkbox itemId={this.props.item.get('id')}/>
                     }
                 </td>
                 <td className="whitespace-no-wrap">
@@ -87,11 +90,10 @@ class TableRow extends Component {
                     <div className="flex justify-around">
                         {
                             this.state.isEdit?
-                                <i className="fas fa-check-circle text-grey hover:text-grey-darker" onClick={this.handleSave.bind(this)}/>:
-                                <i className="fas fa-edit text-grey hover:text-grey-darker" onClick={this.handleEdit.bind(this)}></i>
-                                
+                                <i className="fas fa-check-circle text-grey hover:text-grey-darker" onClick={this.handleSave}/>:
+                                <i className="fas fa-edit text-grey hover:text-grey-darker" onClick={this.handleEdit}></i>
                         }
-                        <i className="fas fa-trash-alt text-grey hover:text-grey-darker" onClick={this.handleDelete.bind(this)}></i>
+                        <i className="fas fa-trash-alt text-grey hover:text-grey-darker" onClick={this.handleDelete}></i>
                     </div>
                 </td>
             </tr>            

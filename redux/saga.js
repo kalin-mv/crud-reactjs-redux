@@ -81,20 +81,29 @@ function* watchRebuildCompany() {
         if (response && response.hasOwnProperty('result') && response.result.length > 0) {
             yield put( actions.toggleCompany() ); // clear toggled companies
             const buildId = response.result[0];
-            const { companies, builds } = yield select(state => state.entities);
+            const entities = yield select(state => state.entities);
+            const builds = entities.get('builds');
+            const companies = entities.get('companies');
+            
             // deactivate current build 
-            const activeBuild =_.find(builds, { status: BUILD_ACTIVE });
-            activeBuild.status = BUILD_SOLVED;
+            const activeBuild = builds
+                .find(o => o.get('status') === BUILD_ACTIVE)
+                .set('status', BUILD_SOLVED);
             // activate new build
-            const newBuild =_.find(builds, { id: buildId });
-            newBuild.status = BUILD_ACTIVE;
-            yield call(updateBuild, [activeBuild, newBuild]); // update the server with builds entities
+            const newBuild =builds
+                .find(b => b.get('id') === buildId)
+                .set('status', BUILD_ACTIVE);
+            // update the server with builds entities
+            const items = [activeBuild.toJS(), newBuild.toJS()];
+            yield call(updateBuild, items); 
+            
             // create new companies for new build
-            const newCompanies = _.chain(companies)
-                .filter(c => ids.includes(c.id))
-                .map(c => ({ ...c, build: buildId }))
-                .value();
-            yield call(createCompany, newCompanies); // update the server with company entities
+            const newCompanies = [];
+            companies
+                .filter(c => ids.includes(c.get('id')))
+                .map(c => newCompanies.push({ ...c.toJS(), build: buildId }));
+            // update the server with company entities
+            yield call(createCompany, newCompanies); 
 
         }
     }

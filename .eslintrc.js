@@ -40,6 +40,13 @@ module.exports = {
         "react/prop-types": [
             0,
             { "ignore": "ignore", "customValidators": "customValidator" }
-          ]
+          ],
+          "react/jsx-no-bind": [
+              1, {
+            "ignoreRefs": true,
+            "allowArrowFunctions": false,
+            "allowFunctions": false,
+            "allowBind":  false
+          }]
     }
 };
