@@ -18,7 +18,8 @@ function callApi(endpoint, schema, method, data = {}) {
             response.json().then(json => ({ json, response }))
         ).then(({ json }) => {
             const camelizedJson = camelizeKeys(json);
-            return {...normalize(camelizedJson, schema)};
+            const result = {...normalize(camelizedJson, schema)};
+            return result;
         })
         .then(
             response => ({response}),
@@ -38,7 +39,10 @@ export const fetchCompany = id => callApi(`/companies/${id}`, companySchema, 'GE
 export const fetchCompanies = () => callApi('/companies', [companySchema], 'GET');
 export const createCompany = data => callApi('/companies', [companySchema], 'POST', data);
 export const updateCompany = data => callApi('/companies', [companySchema], 'PUT', data);
-export const deleteCompany = data => callApi('/companies', companySchema, 'DELETE', data);
+export const deleteCompany = data => callApi('/companies', [companySchema], 'DELETE', data);
 
 export const createBuild = data => callApi('/build', [buildSchema], 'POST', data);
 export const updateBuild = data => callApi('/build', [buildSchema], 'PUT', data);
+export const deleteBuild = data => callApi('/build', [buildSchema], 'DELETE', data);
+
+export const rebuildApp = () => callApi('/rebuild', [companySchema], 'GET');

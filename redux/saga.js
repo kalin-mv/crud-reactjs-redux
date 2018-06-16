@@ -4,7 +4,7 @@ import * as api from '../services/api';
 import * as actions from '../actions';
 import { BUILD_SOLVED, BUILD_ACTIVE, BUILD_EMPTY } from '../services/constants';
 
-const { company, build } = actions;
+const { company, build, rebuild } = actions;
 
 function* request(action, apiFn, data) {
     yield put( action.request(data) );
@@ -24,6 +24,9 @@ const deleteCompany = request.bind(null, company.DELETE, api.deleteCompany);
 
 const createBuild = request.bind(null, build.CREATE, api.createBuild);
 const updateBuild = request.bind(null, build.UPDATE, api.updateBuild);
+const deleteBuild = request.bind(null, build.DELETE, api.deleteBuild);
+
+const rebuildApp = request.bind(null, rebuild, api.rebuildApp);
 
 function* loadCompanies() {
     const companies = yield select(state => state.entities.companies);
@@ -42,7 +45,7 @@ function* saveCompany(company) {
 
 function* deleteCompanyById(id) {
     if (id > 0) {
-        yield call(deleteCompany, { id });
+        yield call(deleteCompany,  id );
     }
 }
 
@@ -67,7 +70,7 @@ function* watchSaveCompany() {
 function* watchDeleteCompany() {
     while(true) {
         const { id } = yield take(actions.DELETE_COMPANY);
-        yield fork(deleteCompanyById, id);
+        yield fork(deleteCompanyById, [id]);
     }
 }
 
@@ -111,6 +114,16 @@ function* watchRebuildCompany() {
 function* watchReloadApp() {
     while(true) {
         yield take(actions.RELOAD_APP);
+        const entities = yield select(state => state.entities);
+        const builds = entities.get('builds');
+        const companies = entities.get('companies');
+
+        const buildIds = [], companyIDs = [];
+        builds.map(b => buildIds.push(b.get('id')));
+        companies.map(b => companyIDs.push(b.get('id')));
+        yield call(deleteBuild, buildIds);       // delete all builds
+        yield call(deleteCompany, companyIDs);   // delete all companies
+        yield call(rebuildApp);                  // recreated builds and companies with new data
     }
 }
 

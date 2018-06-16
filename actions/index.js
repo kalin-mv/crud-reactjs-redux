@@ -26,7 +26,16 @@ function action(type, payload = {}) {
     return {type, ...payload};
 }
 
-function createActionType(name) {
+function createActionRequest(name) {
+    name = _.upperCase(name);
+    return {
+        request: (data) => action(`${name}_${REQUEST}`, { data } ),
+        success: (data, response) => action(`${name}_${SUCCESS}`, { data, response } ),
+        failure: (data, error) => action(`${name}_${FAILURE}`, { data, error }),
+    };
+}
+
+function createEntityRequest(name) {
     return [CREATE, READ, UPDATE, DELETE].reduce((acc, method) => {
         const pref = `${_.upperCase(name)}_${method}`;
         const meta = { entity: _.lowerCase(name), method };
@@ -38,8 +47,9 @@ function createActionType(name) {
         return acc;
     }, {});
 }
-export const company = createActionType('companies');
-export const build = createActionType('builds');
+export const company = createEntityRequest('companies');
+export const build = createEntityRequest('builds');
+export const rebuild = createActionRequest('rebuild');
 
 export const reloadApp = () => action(RELOAD_APP, {});
 export const loadCompaniesPage = () => action(LOAD_COMPANIES_PAGE, {});

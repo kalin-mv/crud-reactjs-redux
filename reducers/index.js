@@ -11,19 +11,12 @@ const initialState = fromJS({
 function entities(state = initialState, action) {
     if (action.response && action.response.entities) {
         const { response: { entities } } = action;
-        switch (action.meta.method) {
-        case ActionTypes.READ:
-        case ActionTypes.CREATE:
-        case ActionTypes.UPDATE:
+        if (action.hasOwnProperty('meta') && action.meta.method === ActionTypes.DELETE) {
+            let list = state.get(action.meta.entity);
+            action.data.map(id => list = list.remove(id));
+            state = state.set(action.meta.entity, list);
+        } else {
             state = state.mergeDeep(entities);    
-            break;
-        case ActionTypes.DELETE: {
-            const list = state.get(action.meta.entity);
-            state = state.set(action.meta.entity, list.remove(action.data.id));
-            break;
-        }
-        default:
-            break;
         }
     }
     return state;

@@ -5,24 +5,28 @@ const faker = require('faker');
 const { BUILD_SOLVED, BUILD_ACTIVE } = require('./constants');
 
 const router = express.Router();
+let builds = [], companies = [];
 
-const builds = _.times(2, i => {
-    return {
-        id: _.uniqueId(),
-        status: i <= 0?BUILD_ACTIVE:BUILD_SOLVED,
-        updatedAt: Date.now()
-    };
-});
-
-const companies = [];
-_.map(builds, b => _.times(5, () => {
-    companies.push({
-        id: _.uniqueId(),
-        build: b.id,
-        companyName : faker.company.companyName(),
-        price: faker.finance.amount(),
+createDatabase();
+function createDatabase() {
+    builds = _.times(2, i => {
+        return {
+            id: _.uniqueId(),
+            status: i <= 0?BUILD_ACTIVE:BUILD_SOLVED,
+            updatedAt: Date.now()
+        };
     });
-}));
+    
+    companies = [];
+    _.map(builds, b => _.times(5, () => {
+        companies.push({
+            id: _.uniqueId(),
+            build: b.id,
+            companyName : faker.company.companyName(),
+            price: faker.finance.amount(),
+        });
+    }));
+}
 
 router.get('/companies', (req, res) => {
     const list = _.map(companies, o => ({
@@ -60,9 +64,17 @@ router.put('/companies', (req, res) => {
 });
 
 router.delete('/companies', (req, res) => {
-    const { id } = req.body;
-    _.remove(companies, (o) => o.id == id);
-    res.json({ id });
+    let ids = req.body;
+    ids = _.isArray(ids)?ids:[ ids ];
+    const deletedIDs = [];
+    _.remove(companies, (o) => {
+        if (ids.includes(o.id)) {
+            deletedIDs.push(o.id);
+            return true;
+        }
+        return false;
+    });
+    res.json(deletedIDs);
 });
 
 router.post('/build', (req, res) => {
@@ -91,5 +103,29 @@ router.put('/build', (req, res) => {
     );
     res.json(result);
 });
+
+router.delete('/build', (req, res) => {
+    let ids = req.body;
+    ids = _.isArray(ids)?ids:[ ids ];
+    const deletedIDs = [];
+    _.remove(builds, (o) => {
+        if (ids.includes(o.id)) {
+            deletedIDs.push(o.id);
+            return true;
+        }
+        return false;
+    });
+    res.json(deletedIDs);
+});
+
+router.get('/rebuild', (req, res) => {
+    createDatabase();
+    const list = _.map(companies, o => ({
+        ...o,
+        build: _.find(builds, {id: o.build})
+    }));
+    res.json(list);
+});
+
 
 module.exports = router;

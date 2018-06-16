@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import './pretty-checkbox.css';
+import './prettycheckbox.scss';
 
 import { toggleCompany } from '../../../actions';
 
 class Checkbox extends Component {
     constructor(props) {
         super(props);
+        this.handleCheck = this.handleCheck.bind(this);
     }
     
     handleCheck(e) {
@@ -19,7 +20,7 @@ class Checkbox extends Component {
         const { itemId, ids } = this.props;
         return (
             <div className="pretty p-default">
-                <input type="checkbox" onChange={this.handleCheck.bind(this)} defaultChecked={ids.includes(itemId)}/>
+                <input type="checkbox" onChange={this.handleCheck} defaultChecked={ids.includes(itemId)}/>
                 <div className="state p-warning">
                     <label/>
                 </div>
