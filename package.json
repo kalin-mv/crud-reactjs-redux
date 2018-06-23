@@ -4,13 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "dev": "yarn build && node prod/server/server.js",
+    "build": "yarn clean && next build && tsc --project tsconfig.server.json",
+    "start": "NODE_ENV=production node server.js",
+    "clean": "rm -rf .next/ && rm -rf prod/"
   },
   "dependencies": {
     "@zeit/next-css": "^0.2.0",
     "@zeit/next-sass": "^0.2.0",
+    "@zeit/next-source-maps": "^0.0.2",
+    "@zeit/next-typescript": "^1.1.0",
     "autoprefixer": "^8.5.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
@@ -29,9 +32,12 @@
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
   },
   "devDependencies": {
+    "@types/node": "^10.3.5",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "css-loader": "^0.28.11",

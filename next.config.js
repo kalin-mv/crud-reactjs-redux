@@ -39,5 +39,15 @@ module.exports = {
 
 const withCss = require('@zeit/next-css');
 const withSass = require('@zeit/next-sass');
-module.exports = withCss(withSass()); 
+const withSourceMaps = require('@zeit/next-source-maps');
+const withTypeScript = require('@zeit/next-typescript');
+
+module.exports = 
+withCss(
+    withSass(
+        withSourceMaps(
+            withTypeScript()
+        )
+    )
+); 
 

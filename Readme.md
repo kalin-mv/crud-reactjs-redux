@@ -1,4 +1,4 @@
-It's the small example project that demonstrates how to implement CRUD operations using ReactJS and Redux. The example is developed based following tools:
+It's the small example project that demonstrates how to implement CRUD operations using ReactJS and Redux-Saga. The example is developed based following tools:
 
 * [ReactJS](https://reactjs.org)
 * [Redux](https://redux.js.org)
@@ -8,4 +8,4 @@ It's the small example project that demonstrates how to implement CRUD operation
 * [ExpressJS](http://expressjs.com)
 * [Tailwind CSS](https://tailwindcss.com)
 
-The demo project is deployed on [ZEIT](https://zeit.co) cloud and you can play with it here: https://crud-reactjs-redux-ubegrtqsrs.now.sh
+The demo project runs on [ZEIT](https://zeit.co) cloud and you can play with it here: https://crud-reactjs-redux-ubegrtqsrs.now.sh

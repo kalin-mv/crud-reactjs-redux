@@ -1,15 +1,18 @@
-const express = require('express');
-const next = require('next');
-const bodyParser = require('body-parser');
-const lg = require('minilog')('server');
+import * as express from 'express';
+import * as next from 'next';
+import { bodyParser } from 'body-parser';
+// import * as lg from 'minilog';
 
-const router = require('./services/router');
+// lg.enable();
+// lg('server');
+
+import router from '../services/router';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-require('minilog').enable();
+// lg.info("alal");
 
 app.prepare()
     .then(() => {
@@ -23,11 +26,11 @@ app.prepare()
 
         server.listen(3000, (err) => {
             if (err) throw err;
-            lg.info('> Ready on http://localhost:3000');
+            console.log('> Ready on http://localhost:3000')
         });
     })
     .catch((ex) => {
-        lg.error(ex);
+        console.log(ex);
         process.exit(1);
     });
 
