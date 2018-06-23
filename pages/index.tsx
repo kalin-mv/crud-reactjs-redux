@@ -9,9 +9,15 @@ import Table from '../components/Table/Table';
 import History from '../components/History/History';
 
 import { loadCompaniesPage } from '../actions';
-import { BUILD_SOLVED, BUILD_ACTIVE } from '../services/constants';
+import { BUILD_SOLVED, BUILD_ACTIVE } from '../server/constants';
 
-class Index extends PureComponent {
+interface IndexProps {
+    loadCompaniesPage: string,
+    companies: boolean,
+    builds
+  }
+
+class Index extends PureComponent<IndexProps> {
 
     componentDidMount() {
         this.props.loadCompaniesPage();
@@ -61,11 +67,11 @@ class Index extends PureComponent {
     }
 }
 
-Index.propTypes = {
-    loadCompaniesPage: PropTypes.func.isRequired,
-    companies: PropTypes.object.isRequired,
-    builds: PropTypes.object.isRequired,
-};
+// Index.propTypes = {
+//     loadCompaniesPage: PropTypes.func.isRequired,
+//     companies: PropTypes.object.isRequired,
+//     builds: PropTypes.object.isRequired,
+// };
 
 const mapStateToProps = state => {
     const { entities } = state;   

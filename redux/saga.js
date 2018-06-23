@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
 import * as api from '../services/api';
 import * as actions from '../actions';
-import { BUILD_SOLVED, BUILD_ACTIVE, BUILD_EMPTY } from '../services/constants';
+import { BUILD_SOLVED, BUILD_ACTIVE, BUILD_EMPTY } from '../server/constants';
 
 const { company, build, rebuild } = actions;
 

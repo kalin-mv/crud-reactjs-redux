@@ -23,5 +23,8 @@
       "es2016"
     ],
     "outDir": ".next/"
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
