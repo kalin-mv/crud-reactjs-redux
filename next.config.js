@@ -5,6 +5,15 @@ module.exports = {
     webpack: (config) => {
         config.module.rules.push(
             {
+                test: /\.svg/,
+                use: {
+                    loader: 'svg-url-loader',
+                    options: {
+                        name: 'dist/[path][name].[ext]'
+                    }
+                }
+            },
+            {
                 test: /\.(css|scss)/,
                 loader: 'emit-file-loader',
                 options: {
@@ -32,6 +41,7 @@ module.exports = {
                     }
                 ]
             }
+           
         );
         return config;
     }

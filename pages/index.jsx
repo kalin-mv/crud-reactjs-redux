@@ -14,13 +14,15 @@ import { BUILD_SOLVED, BUILD_ACTIVE } from '../services/constants';
 class Index extends PureComponent {
 
     componentDidMount() {
-        this.props.loadCompaniesPage();
+        const { loadCompaniesPage } = this.props;
+        loadCompaniesPage();
     }
 
     render() {
         const { companies, builds } = this.props;
         const isLoading = companies.size <= 0 || builds.size <= 0;
-        let list = Map(), history = List();
+        let list = Map();
+        let history = List();
         if (!isLoading) {
             const b = builds.find(o => o.get('status') === BUILD_ACTIVE);
             list = companies
@@ -67,11 +69,11 @@ Index.propTypes = {
     builds: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => {
-    const { entities } = state;   
+const mapStateToProps = (state) => {
+    const { entities } = state;
     return {
-        companies: entities.get('companies'), 
-        builds: entities.get('builds')
+        companies: entities.get('companies'),
+        builds: entities.get('builds'),
     };
 };
 
