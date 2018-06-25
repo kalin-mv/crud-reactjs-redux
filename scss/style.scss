@@ -62,21 +62,3 @@
  */
 
 @import "_vars.scss";
-
-a {
-  @apply .text-black;
-  text-decoration: none;
-}
-
-.nav {
-  @apply .flex .justify-center;
-
-  &:last-child {
-    @apply .mr-0;
-  }
-
-}
-
-table {
-  border-collapse: collapse;
-}
