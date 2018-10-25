@@ -8,4 +8,4 @@ It's the small example project that demonstrates how to implement CRUD operation
 * [ExpressJS](http://expressjs.com)
 * [Tailwind CSS](https://tailwindcss.com)
 
-The demo project is deployed on [ZEIT](https://zeit.co) cloud and you can play with it here: https://crud-reactjs-redux-ubegrtqsrs.now.sh
+The demo project is deployed on [ZEIT](https://zeit.co) cloud and you can play with it here: https://crud-reactjs-redux-ubegrtqsrs.now.sh (please wait until ZEIT build the app)
